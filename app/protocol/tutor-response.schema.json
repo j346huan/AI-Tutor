@@ -1,0 +1,520 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-mathematician:tutor-response:v1",
+  "title": "AI Mathematician tutor response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "requestId",
+    "classification",
+    "commands"
+  ],
+  "properties": {
+    "protocolVersion": {
+      "type": "string",
+      "const": "ai-mathematician.tutor.v1"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "intent", "confidence", "rationale"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "classify_student_intent"
+        },
+        "intent": {
+          "type": "string",
+          "enum": [
+            "session_start",
+            "proof_step",
+            "proposed_approach",
+            "confusion",
+            "mathematical_question",
+            "question_about_choice",
+            "select_choice",
+            "request_hint",
+            "request_proof_feedback",
+            "edit_proof",
+            "off_topic",
+            "unclear"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rationale": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "markdown"],
+            "properties": {
+              "type": { "type": "string", "const": "reply" },
+              "markdown": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "label", "latex"],
+            "properties": {
+              "type": { "type": "string", "const": "commit_latex" },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "latex", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "write_course_note" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "latex", "proofLatex", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "write_course_note" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "proofLatex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "latex", "complete", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "record_course_note_progress" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "complete": { "type": "boolean" },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "statementId",
+              "latex",
+              "proofFragmentLatex",
+              "complete",
+              "reason"
+            ],
+            "properties": {
+              "type": { "type": "string", "const": "record_course_note_progress" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "proofFragmentLatex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "complete": { "type": "boolean" },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "latex", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "revise_course_note" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "latex", "proofLatex", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "revise_course_note" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "proofLatex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "noteId",
+              "afterStatementId",
+              "kind",
+              "title",
+              "latex",
+              "proofLatex",
+              "reason"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "insert_course_note_supplement"
+              },
+              "noteId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "afterStatementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "kind": {
+                "type": "string",
+                "enum": ["lemma", "proposition", "theorem"]
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "proofLatex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "statementId", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "advance_roadmap" },
+              "statementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "latex", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "replace_latex" },
+              "latex": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "target", "replacement", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "replace_latex_block" },
+              "target": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "replacement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "prompt", "choices"],
+            "properties": {
+              "type": { "type": "string", "const": "propose_approaches" },
+              "prompt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              },
+              "choices": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "label", "explanation"],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000
+                    },
+                    "explanation": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "prompt", "choices"],
+            "properties": {
+              "type": { "type": "string", "const": "propose_next_sentences" },
+              "prompt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              },
+              "choices": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "latex", "explanation"],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    },
+                    "latex": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100000
+                    },
+                    "explanation": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "severity", "message", "suggestion"],
+            "properties": {
+              "type": { "type": "string", "const": "identify_mistake" },
+              "severity": {
+                "type": "string",
+                "enum": ["imprecision", "logical_gap", "incorrect"]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              },
+              "suggestion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "mode", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "set_mode" },
+              "mode": {
+                "type": "string",
+                "enum": ["learning", "proof", "reflection", "completed"]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "reason"],
+            "properties": {
+              "type": { "type": "string", "const": "no_op" },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12000
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
