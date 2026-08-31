@@ -1,5 +1,6 @@
 export { euclidLesson } from "./euclid";
 export { galoisLesson } from "./galois";
+export { blowupsLesson } from "./blowups";
 export type {
   LessonChoice,
   LessonChoiceSet,
@@ -22,6 +23,7 @@ export type {
 
 import { euclidLesson } from "./euclid";
 import { galoisLesson } from "./galois";
+import { blowupsLesson } from "./blowups";
 
 /** Add future structured lessons here; UI code need not change. */
-export const lessonCatalog = [euclidLesson, galoisLesson] as const;
+export const lessonCatalog = [euclidLesson, galoisLesson, blowupsLesson] as const;
