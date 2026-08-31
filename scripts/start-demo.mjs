@@ -4,9 +4,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const url = "http://127.0.0.1:3000";
+const bridgeUrl = "http://127.0.0.1:3210";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 const isWindows = process.platform === "win32";
+const production = process.argv.includes("--production");
 const vinextCli = path.join(
   projectRoot,
   "node_modules",
@@ -15,18 +17,34 @@ const vinextCli = path.join(
   "cli.js",
 );
 const bridgeScript = path.join(projectRoot, "scripts", "codex-tutor-bridge.mjs");
+const productionEntry = path.join(projectRoot, "dist", "server", "index.js");
 
 try {
-  await Promise.all([access(vinextCli), access(bridgeScript)]);
+  await Promise.all([
+    access(vinextCli),
+    access(bridgeScript),
+    ...(production ? [access(productionEntry)] : []),
+  ]);
 } catch {
-  console.error("The local demo is not installed. Run npm install, then try npm run dev again.");
+  console.error(
+    production
+      ? "The production build is missing. Run npm run build, then try npm start again."
+      : "The local app is not installed. Run npm install, then try npm run dev again.",
+  );
   process.exitCode = 1;
   process.exit();
 }
 
 const server = spawn(
   process.execPath,
-  [vinextCli, "dev", "--hostname", "127.0.0.1", "--port", "3000"],
+  [
+    vinextCli,
+    production ? "start" : "dev",
+    "--hostname",
+    "127.0.0.1",
+    "--port",
+    "3000",
+  ],
   { cwd: projectRoot, stdio: "inherit" },
 );
 const bridge = spawn(process.execPath, [bridgeScript], {
@@ -36,6 +54,7 @@ const bridge = spawn(process.execPath, [bridgeScript], {
 
 let browserOpened = false;
 let shuttingDown = false;
+let ready = false;
 
 function stopChild(child, signal = "SIGTERM") {
   if (!child.killed && child.exitCode === null) {
@@ -58,10 +77,24 @@ function stopDemo(signal = "SIGTERM") {
 async function openWhenReady() {
   for (let attempt = 0; attempt < 240 && !browserOpened && !shuttingDown; attempt += 1) {
     try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(1_000) });
-      if (response.ok) {
-        await response.body?.cancel();
+      const [siteResponse, bridgeResponse] = await Promise.all([
+        fetch(url, { signal: AbortSignal.timeout(1_000) }),
+        fetch(bridgeUrl + "/health", { signal: AbortSignal.timeout(1_000) }),
+      ]);
+      const [siteHtml, bridgeHealth] = await Promise.all([
+        siteResponse.text(),
+        bridgeResponse.json().catch(() => null),
+      ]);
+      if (
+        !shuttingDown &&
+        siteResponse.ok &&
+        siteHtml.includes("<title>AI Mathematician") &&
+        bridgeResponse.ok &&
+        bridgeHealth?.ok === true &&
+        bridgeHealth?.transport === "codex-exec"
+      ) {
         browserOpened = true;
+        ready = true;
         console.log(`\nAI Mathematician is available at ${url}\n`);
         if (process.env.NO_OPEN !== "1" && process.env.CI !== "true") {
           const command = isWindows
@@ -90,7 +123,9 @@ async function openWhenReady() {
   }
 
   if (!browserOpened && !shuttingDown) {
-    console.error("The local site did not become ready within 60 seconds.");
+    console.error("AI Mathematician did not become ready within 60 seconds.");
+    process.exitCode = 1;
+    stopDemo();
   }
 }
 
@@ -114,15 +149,28 @@ server.once("exit", (code, signal) => {
   if (!shuttingDown && signal) {
     console.error("The local site stopped after receiving " + signal + ".");
   }
-  process.exitCode = code ?? 0;
+  if (!ready && !shuttingDown) {
+    console.error("AI Mathematician could not start. Check whether port 3000 is already in use.");
+  }
+  process.exitCode = code ?? (ready ? 0 : 1);
+  stopDemo();
 });
 
 bridge.once("error", (error) => {
   console.error("The local Codex tutor bridge could not be started: " + error.message);
+  process.exitCode = 1;
+  stopDemo();
 });
 
 bridge.once("exit", (code) => {
   if (code && code !== 0) {
     console.error("The local Codex tutor bridge stopped with code " + code + ".");
+  }
+  if (!ready && !shuttingDown) {
+    console.error("AI Mathematician could not start. Check whether port 3210 is already in use.");
+  }
+  if (!shuttingDown) {
+    process.exitCode = code ?? (ready ? 0 : 1);
+    stopDemo();
   }
 });

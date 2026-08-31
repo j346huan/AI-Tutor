@@ -1,4 +1,3 @@
-import { spawn } from "node:child_process";
 import { constants as fsConstants } from "node:fs";
 import { createServer } from "node:http";
 import {
@@ -13,6 +12,7 @@ import {
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import spawn from "cross-spawn";
 
 const HOST = "127.0.0.1";
 const TUTOR_PROTOCOL_VERSION = "ai-mathematician.tutor.v1";
