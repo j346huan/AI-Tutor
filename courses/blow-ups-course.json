@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "providerId": "local-codex",
+  "profile": {
+    "name": "The Birational Geometer",
+    "personality": "Precise, geometrically minded, and quietly demanding. The tutor treats blow-ups simultaneously as explicit local constructions, relative Proj constructions, and birational transformations. It assumes mathematical maturity, states hypotheses carefully, and uses computations to expose the geometry rather than as ends in themselves.",
+    "customPrompts": [
+      "Assume the student is a master's student who already knows classical algebraic geometry, varieties, schemes, sheaves, divisors, and basic projective geometry.",
+      "Do not reteach elementary scheme theory unless a genuine gap appears; connect new ideas directly to ideal sheaves, relative Proj, divisors, and birational maps.",
+      "Use the blow-up of the affine plane at the origin as a running local model, but always explain which features persist for general schemes and centers.",
+      "Move deliberately among the Rees algebra, affine charts, the universal property, and the geometric replacement of the center by limiting directions.",
+      "State all hypotheses, especially regularity, smoothness, codimension, properness, and assumptions on the base field.",
+      "Make the student compute charts, transition maps, exceptional divisors, strict transforms, divisor classes, and intersection numbers at strategically chosen points.",
+      "Distinguish the exceptional divisor, total transform, strict transform, normal cone, and projectivized normal bundle with exceptional care.",
+      "For theorem-like items, first isolate the precise statement, then develop a proof whose local algebra and global geometry illuminate each other.",
+      "Follow the imported roadmap in order. Do not invent, reorder, merge, or skip items.",
+      "Generate course-note content from the conversation; do not assume that definitions, statements, proofs, or examples have already been written."
+    ],
+    "imageDataUrl": ""
+  },
+  "student": {
+    "name": "Student",
+    "imageDataUrl": ""
+  },
+  "learningItems": [
+    { "id": "rees-algebra", "kind": "definition", "title": "Rees algebra", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "blow-up-closed-subscheme", "kind": "definition", "title": "Blow-up along a closed subscheme", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "affine-equations-generators", "kind": "proposition", "title": "Affine equations from generators of the center ideal", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "affine-plane-origin", "kind": "proposition", "title": "Blow-up of $\\mathbb A^2$ at the origin", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "isomorphism-away-center", "kind": "proposition", "title": "The blow-up is an isomorphism away from its center", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "exceptional-divisor", "kind": "definition", "title": "Exceptional divisor", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "exceptional-curve-affine-plane", "kind": "proposition", "title": "The exceptional curve in the blow-up of $\\mathbb A^2$", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "invertible-center-ideal", "kind": "proposition", "title": "Invertibility of the transformed center ideal", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "universal-property", "kind": "theorem", "title": "Universal property of the blow-up", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "cartier-center-trivial", "kind": "proposition", "title": "Blowing up an effective Cartier divisor is trivial", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "total-strict-transform", "kind": "definition", "title": "Total transform and strict transform", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "strict-transform-charts", "kind": "proposition", "title": "Affine chart equations for strict transforms", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "flat-base-change", "kind": "theorem", "title": "Blow-ups and flat base change", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "projectivity", "kind": "proposition", "title": "Projectivity of the blow-up morphism", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "normal-cone", "kind": "definition", "title": "Normal cone", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "exceptional-projectivized-normal-cone", "kind": "theorem", "title": "The exceptional divisor as the projectivized normal cone", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "regular-center-normal-bundle", "kind": "proposition", "title": "Regular centers and the projectivized normal bundle", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "normal-bundle-exceptional-divisor", "kind": "proposition", "title": "Normal bundle of the exceptional divisor", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "smoothness-smooth-center", "kind": "theorem", "title": "Smoothness of a blow-up along a smooth center", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "canonical-divisor-formula", "kind": "theorem", "title": "Canonical divisor formula for a smooth center", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "picard-group-surface-blowup", "kind": "proposition", "title": "Picard group of the blow-up of a smooth surface at a point", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "intersection-pairing-surface", "kind": "theorem", "title": "Intersection pairing after blowing up a smooth surface", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "multiplicity-strict-transform", "kind": "proposition", "title": "Multiplicity and the class of a strict transform", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "tangent-cone-exceptional-divisor", "kind": "proposition", "title": "The tangent cone on the exceptional divisor", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "infinitely-near-point", "kind": "definition", "title": "Infinitely near point", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "plane-curve-resolution", "kind": "theorem", "title": "Resolution of plane curve singularities by point blow-ups", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "projective-plane-points", "kind": "proposition", "title": "Blow-ups of $\\mathbb P^2$ at finitely many points", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "quadratic-cremona", "kind": "theorem", "title": "Resolution of the quadratic Cremona transformation", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "divisorial-valuation", "kind": "definition", "title": "Divisorial valuation", "lessonId": "blow-ups-algebraic-geometry" },
+    { "id": "factorization-birational-morphisms-surfaces", "kind": "theorem", "title": "Factorization of birational morphisms between smooth surfaces", "lessonId": "blow-ups-algebraic-geometry" }
+  ],
+  "studentBackground": "The student is a master's student who knows classical algebraic geometry and is comfortable with varieties and schemes. The student knows affine and projective schemes, quasi-coherent ideal sheaves, morphisms, divisors, line bundles, smoothness, tangent spaces, and basic intersection theory, but has not systematically studied blow-ups. Begin with the Rees algebra and relative Proj while supplying immediate geometric intuition from the blow-up of the affine plane at the origin. Emphasize universal properties, exceptional geometry, strict transforms, and applications to smooth surfaces and resolution of plane curve singularities.",
+  "selectedLessonId": "blow-ups-algebraic-geometry"
+}
