@@ -55,13 +55,13 @@ async function loadHarness() {
           };
         }
 
-        function response(command) {
+        function response(command, intent = "proof_step") {
           return {
             protocolVersion: TUTOR_PROTOCOL_VERSION,
             requestId: "definition-emphasis-turn",
             classification: {
               type: "classify_student_intent",
-              intent: "proof_step",
+              intent,
               confidence: 1,
               rationale: "The item has been established.",
             },
@@ -139,11 +139,14 @@ async function loadHarness() {
               reviseRequest,
             ),
             propositionUnchanged: parseTutorResponse(
-              response(noteCommand(
-                "write_course_note",
-                "The evaluation kernel is principal.",
-                "Apply polynomial division.",
-              )),
+              response(
+                noteCommand(
+                  "write_course_note",
+                  "The evaluation kernel is principal.",
+                  "Apply polynomial division.",
+                ),
+                "mathematical_question",
+              ),
               propositionRequest,
             ),
             malformed: validateCourseNotePart("A \\emph field extension is ..."),
