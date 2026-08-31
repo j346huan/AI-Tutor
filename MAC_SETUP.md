@@ -1,18 +1,25 @@
-# Run AI Mathematician on a Mac
+# Run AI Mathematician on macOS
 
-Requirements:
+## Requirements
 
-- macOS with Node.js 22.13 or newer
-- Codex CLI installed and signed in
+- Node.js 22.13 or newer
+- A current desktop browser
+- The [OpenAI Codex CLI](https://developers.openai.com/codex/cli/) installed and signed in
 
-Setup:
+## Setup
 
-1. Unzip this archive.
-2. Open Terminal in the extracted folder.
-3. Run `npm install`.
-4. Run `npm run dev`.
-5. The site should open at `http://127.0.0.1:3000`.
+```bash
+git clone https://github.com/j346huan/AI-Tutor.git
+cd AI-Tutor
+npm install
+npm run dev
+```
 
-Keep the Terminal window open while using the tutor. Press `Control-C` to stop the site and local Codex bridge.
+The site opens at [http://127.0.0.1:3000](http://127.0.0.1:3000). Keep the terminal open while using the tutor and press `Control-C` to stop it.
 
-The archive contains source code only. Dependencies, build output, browser progress, settings, and Codex credentials are not included. Settings can be moved separately with **Settings > Download current settings** and imported on the Mac.
+If `codex` is not available on your `PATH`, set its location before starting:
+
+```bash
+export AI_MATHEMATICIAN_CODEX_BIN="/path/to/codex"
+npm run dev
+```

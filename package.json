@@ -1,7 +1,23 @@
 {
-  "name": "ai-mathematician-demo",
+  "name": "ai-mathematician",
   "version": "0.1.0",
+  "description": "A local, conversation-driven mathematics tutor powered by the OpenAI Codex CLI.",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/j346huan/AI-Tutor.git"
+  },
+  "homepage": "https://github.com/j346huan/AI-Tutor#readme",
+  "bugs": {
+    "url": "https://github.com/j346huan/AI-Tutor/issues"
+  },
+  "keywords": [
+    "mathematics",
+    "tutor",
+    "latex",
+    "codex"
+  ],
   "engines": {
     "node": ">=22.13.0"
   },
@@ -9,12 +25,13 @@
     "dev": "node scripts/start-demo.mjs",
     "dev:server": "vinext dev",
     "build": "vinext build",
-    "start": "vinext start",
+    "start": "node scripts/start-demo.mjs --production",
     "test": "npm run build && node --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "cross-spawn": "^7.0.6",
     "dompurify": "^3.4.13",
     "drizzle-orm": "0.45.2",
     "katex": "^0.18.1",

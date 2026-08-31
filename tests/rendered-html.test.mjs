@@ -131,7 +131,7 @@ test("keeps lesson data, provider logic, protocol, and UI concerns separated", a
 
   assert.match(tutor, /window\.print\(\)/);
   assert.match(tutor, /getActiveChoiceSet/);
-  assert.match(tutor, /Learn \{lessonTopic\} with \{settings\.profile\.name\}/);
+  assert.match(tutor, /<h1>Start a new session\.<\/h1>/);
   assert.match(tutor, /Ask for feedback/);
   assert.match(tutor, /aria-controls="latex-source-pane"/);
   assert.match(tutor, /sourcePaneCollapsed \? "Show LaTeX code" : "Minimize LaTeX code"/);
@@ -153,7 +153,10 @@ test("keeps lesson data, provider logic, protocol, and UI concerns separated", a
     tutor,
     /const showWorkspace = Boolean\([\s\S]*?session\.providerId === localCodexProvider\.descriptor\.id &&[\s\S]*?session\.proof\.revision > 0[\s\S]*?\);/,
   );
-  assert.match(tutor, /courseNotesMode \? undefined : targetStatement\?\.statement/);
+  assert.match(
+    tutor,
+    /const currentStatementProse =\s*currentStatement\?\.statement \?\? targetStatement\?\.statement;/,
+  );
   assert.match(tutor, /hasCourseNoteContent[\s\S]*?"Outline reviewed\."/);
   assert.doesNotMatch(tutor, /No current statement is available/);
   assert.doesNotMatch(tutor, /Reset to guided proof|Your next proof step/);

@@ -4,13 +4,11 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
-test("uses browser-default typography and link-style actions", async () => {
+test("uses restrained typography and link-style actions", async () => {
   const css = await readFile(new URL("app/globals.css", root), "utf8");
 
   assert.doesNotMatch(css, /--serif|--sans|--mono/);
-  assert.doesNotMatch(css, /font-family\s*:/);
-  assert.doesNotMatch(css, /font-size\s*:/);
-  assert.doesNotMatch(css, /font\s*:\s*inherit/);
+  assert.match(css, /\.math-text,\s*\.rendered-proof\s*\{[^}]*font-family:\s*KaTeX_Main, serif;/s);
   assert.match(
     css,
     /a,\s*button,\s*input\[type="file"\]::file-selector-button\s*\{[^}]*color:\s*var\(--link\);[^}]*text-decoration:\s*underline;/s,
@@ -18,10 +16,6 @@ test("uses browser-default typography and link-style actions", async () => {
   assert.match(
     css,
     /\.primary-button\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*color:\s*var\(--link\);[^}]*text-decoration:\s*underline;/s,
-  );
-  assert.match(
-    css,
-    /\.learning-action-option\s*\{[^}]*border:\s*0;[^}]*border-radius:\s*0;[^}]*background:\s*transparent;/s,
   );
   assert.match(
     css,
@@ -51,6 +45,6 @@ test("keeps compact context and hides instructional labels only visually", async
     css,
     /\.transcript-message--student\s*\{[^}]*margin-left:\s*0;[^}]*padding-left:\s*0;[^}]*border-left:\s*0;/s,
   );
-  assert.match(tutor, /<legend className="sr-only">/);
+  assert.match(tutor, /<legend ref=\{choiceHeadingRef\} tabIndex=\{-1\}>/);
   assert.match(tutor, /<label className="sr-only" htmlFor="student-draft">/);
 });

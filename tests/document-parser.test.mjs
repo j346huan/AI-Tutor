@@ -54,7 +54,7 @@ Choose compatible bases.
       { kind: "section", text: "Field extensions", environment: undefined },
       {
         kind: "statement",
-        text: "Definition (Degree)",
+        text: "Definition (degree)",
         environment: "definition",
       },
       {
